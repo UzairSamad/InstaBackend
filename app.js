@@ -17,6 +17,10 @@ mongoose.connection.on('error',(err)=>{
 require('./models/user')
 
 
+// importing routes
+
+app.use(require('./Routes/auth'))
+
 app.get('/',(req,res)=>{
     res.send("hello world")
 
