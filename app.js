@@ -13,6 +13,9 @@ mongoose.connection.on('error',(err)=>{
 })
    
 
+// importing models
+require('./models/user')
+
 
 app.get('/',(req,res)=>{
     res.send("hello world")
