@@ -4,9 +4,10 @@ const mongoose = require('mongoose')
 const User = mongoose.model("User")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const loginmiddleware = require('../middelwares/loginmiddleware')
 const JWT_SCERET = "efsgedtttvasolvb"
 
-router.get('/', (req, res) => {
+router.get('/protected', loginmiddleware, (req, res) => {
     res.send('hello in auth')
 })
 
