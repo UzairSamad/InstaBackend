@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 const User = mongoose.model("User")
+const bcrypt = require('bcryptjs')
 
 router.get('/', (req, res) => {
     res.send('hello in auth')
@@ -17,17 +18,21 @@ router.post('/sign-up', (req, res) => {
             if (savedUser) {
                 return res.status(422).json({ error: 'User already exist' })
             }
+            bcrypt.hash(password, 12)
+                .then(hashedPassword => {
+                    const newUser = new User({
+                        email,
+                        password: hashedPassword,
+                        name
+                    })
+                    newUser.save().then(newUser => {
+                        res.json({ message: "Created Succesfully" })
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                })
 
-            const newUser = new User({
-                email,
-                password,
-                name
-            })
-            newUser.save().then(newUser => {
-                res.json({ message: "Created Succesfully" })
-            }).catch(err => {
-                console.log(err)
-            })
+
 
         }).catch(err => {
             console.log(err)
