@@ -4,28 +4,32 @@ const PORT = 5000
 const mongoose = require('mongoose')
 // const MONGODBURI = require('./keys')
 
-mongoose.connect("mongodb+srv://uzair:PWK6z6lbsofmWdnU@cluster0.mg7j7.mongodb.net/<dbname>?retryWrites=true&w=majority")
-mongoose.connection.on('connected',()=>{
+mongoose.connect("mongodb+srv://uzair:PWK6z6lbsofmWdnU@cluster0.mg7j7.mongodb.net/<dbname>?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+mongoose.connection.on('connected', () => {
     console.log('connected to MOngo DB')
 })
-mongoose.connection.on('error',(err)=>{
-    console.log('error connecting',err )
+mongoose.connection.on('error', (err) => {
+    console.log('error connecting', err)
 })
-   
+
+
 
 // importing models
 require('./models/user')
 
 
 // importing routes
-
+app.use(express.json())
 app.use(require('./Routes/auth'))
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.send("hello world")
 
 })
 
-app.listen(PORT,()=>{
-    console.log('Server is runing on Port :',PORT)
+app.listen(PORT, () => {
+    console.log('Server is runing on Port :', PORT)
 })
