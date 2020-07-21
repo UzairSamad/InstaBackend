@@ -6,7 +6,7 @@ const User = mongoose.model("User")
 module.exports = (req,res,next)=>{
     const {authorization} = req.headers
     if(!authorization){
-        return res.status(401).json({error:'you must be logged in'})
+        return res.status(401).json({error:'you must be logged in  or Invalid Token'})
     }
     const token = authorization.replace("Bearer","")
     jwt.verify(token,JWT_SCERET,(err,payload)=>{
@@ -17,7 +17,8 @@ module.exports = (req,res,next)=>{
         const {_id} = payload
         User.findById(_id).then(userdata=>{
             req.user = userdata
+            next() 
+
         })
-        next() 
     })
 }

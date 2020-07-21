@@ -19,11 +19,15 @@ mongoose.connection.on('error', (err) => {
 
 // importing models
 require('./models/user')
+require('./models/post')
+
 
 
 // importing routes
 app.use(express.json())
 app.use(require('./Routes/auth'))
+app.use(require('./Routes/postRoute'))
+
 
 app.get('/', (req, res) => {
     res.send("hello world")
