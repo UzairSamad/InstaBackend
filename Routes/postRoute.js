@@ -7,7 +7,7 @@ const Post = mongoose.model("Post")
 
 // get all posts route
 router.get('/all-posts', (req, res) => {
-    Post.find().populate("postedBy","_id name")
+    Post.find().populate("postedBy", "_id name")
         .then(posts => {
             res.json({ posts })
         })
@@ -15,6 +15,21 @@ router.get('/all-posts', (req, res) => {
             console.log(err)
         })
 })
+
+
+// get mypost route
+router.get('/my-posts', loginmiddleware,(req, res) => {
+    // console.log(req.user)
+    // return
+    Post.find({ postedBy: req.user._id }).populate("postedBy", "_id name")
+        .then(posts => {
+            res.json({ posts })
+        })
+        .catch(err => {
+            res.json({ err })
+        })
+})
+
 
 // create post route
 router.post('/create-post', loginmiddleware, (req, res) => {
