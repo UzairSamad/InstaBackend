@@ -7,11 +7,19 @@ const jwt = require('jsonwebtoken')
 const loginmiddleware = require('../middelwares/loginmiddleware')
 const JWT_SCERET = "efsgedtttvasolvb"
 
-router.get('/protected', loginmiddleware, (req, res) => {
-    res.send('hello in auth')
-})
+
+router.get('/', (req, res) => {
+        res.json({
+            name: 'UZair',
+            msg: 'hello'
+        })
+    })
+    // router.get('/protected', loginmiddleware, (req, res) => {
+    //     res.send('hello in auth')
+    // })
 
 router.post('/sign-up', (req, res) => {
+    console.log(req.body)
     const { name, email, password } = req.body
     if (!email || !password || !name) {
         return res.status(422).json({ error: "Please ADD All Fields" })
@@ -56,8 +64,9 @@ router.post('/sign-in', (req, res) => {
                 .then(doMatch => {
                     if (doMatch) {
                         const token = jwt.sign({ _id: savedUser._id }, JWT_SCERET)
-                        res.json({ token })
-                        // res.json({ message: 'Login Succesfully' })
+                        const { _id, name, email } = savedUser
+                        res.json({ token, user: { _id, name, email } })
+                            // res.json({ message: 'Login Succesfully' })
                     } else {
                         return res.status(422).json({ eror: 'Invalid Email or Password' })
                     }

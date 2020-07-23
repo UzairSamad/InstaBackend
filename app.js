@@ -2,7 +2,18 @@ const express = require('express')
 const app = express()
 const PORT = 5000
 const mongoose = require('mongoose')
-// const MONGODBURI = require('./keys')
+    // const MONGODBURI = require('./keys')
+var cors = require('cors')
+var bodyParser = require('body-parser')
+
+
+
+
+app.use(cors())
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 
 mongoose.connect("mongodb+srv://uzair:PWK6z6lbsofmWdnU@cluster0.mg7j7.mongodb.net/<dbname>?retryWrites=true&w=majority", {
     useNewUrlParser: true,
