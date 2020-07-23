@@ -8,10 +8,11 @@ module.exports = (req, res, next) => {
     if (!authorization) {
         return res.status(401).json({ error: 'Invalid Token' })
     }
-    // const token = authorization.replace("Bearer", "")
-    // console.log(authorization)
+    const token = authorization.replace("Bearer ", "")
+    console.log(authorization)
 
     jwt.verify(token, JWT_SCERET, (err, payload) => {
+        console.log(token)
         if (err) {
             return res.status(401).json({ error: "You must be logged in" })
         }
