@@ -18,7 +18,7 @@ router.get('/all-posts', (req, res) => {
 
 
 // get mypost route
-router.get('/my-posts', loginmiddleware,(req, res) => {
+router.get('/my-posts', loginmiddleware, (req, res) => {
     // console.log(req.user)
     // return
     Post.find({ postedBy: req.user._id }).populate("postedBy", "_id name")
@@ -33,8 +33,8 @@ router.get('/my-posts', loginmiddleware,(req, res) => {
 
 // create post route
 router.post('/create-post', loginmiddleware, (req, res) => {
-    const { title, body } = req.body
-    if (!title || !body) {
+    const { title, body, pic } = req.body
+    if (!title || !body || !pic) {
         return res.status(422).json({ error: "PLease add all the fields" })
     }
     // console.log(req.user)
@@ -45,11 +45,12 @@ router.post('/create-post', loginmiddleware, (req, res) => {
     const post = new Post({
         title,
         body,
+        picture: pic,
         postedBy: req.user
     })
     post.save().then(result => {
-        res.json({ post: result })
-    })
+            res.json({ post: result })
+        })
         .catch(err => {
             console.log(err)
         })
