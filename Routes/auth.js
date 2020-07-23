@@ -60,6 +60,7 @@ router.post('/sign-in', (req, res) => {
             if (!savedUser) {
                 return res.status(422).json({ error: 'Invalid Email or Password' })
             }
+            console.log(`${password}=====>${savedUser.password}`)
             bcrypt.compare(password, savedUser.password)
                 .then(doMatch => {
                     if (doMatch) {
@@ -68,7 +69,7 @@ router.post('/sign-in', (req, res) => {
                         res.json({ token, user: { _id, name, email } })
                             // res.json({ message: 'Login Succesfully' })
                     } else {
-                        return res.status(422).json({ eror: 'Invalid Email or Password' })
+                        return res.status(422).json({ error: 'Invalid Email or Password' })
                     }
                 }).catch(err => {
                     console.log(err)

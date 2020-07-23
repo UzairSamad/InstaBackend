@@ -45,7 +45,7 @@ router.post('/create-post', loginmiddleware, (req, res) => {
     const post = new Post({
         title,
         body,
-        picture: pic,
+        photo: pic,
         postedBy: req.user
     })
     post.save().then(result => {
