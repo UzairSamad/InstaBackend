@@ -49,11 +49,43 @@ router.post('/create-post', loginmiddleware, (req, res) => {
         postedBy: req.user
     })
     post.save().then(result => {
-            res.json({ post: result })
-        })
+        res.json({ post: result })
+    })
         .catch(err => {
             console.log(err)
         })
 })
+
+// likePost api
+router.put('/like', loginmiddleware, (req, res) => {
+    Post.findByIdAndUpdate(req.body.postId, {
+        $push: { likes: req.user._id }
+    },{
+        new:true
+    }).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
+
+
+// Un-likePost api
+router.put('/unlike', loginmiddleware, (req, res) => {
+    Post.findByIdAndUpdate(req.body.postId, {
+        $pull: { likes: req.user._id }
+    },{
+        new:true
+    }).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
+
 
 module.exports = router
