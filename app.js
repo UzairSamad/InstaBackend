@@ -38,6 +38,8 @@ require('./models/post')
 app.use(express.json())
 app.use(require('./Routes/auth'))
 app.use(require('./Routes/postRoute'))
+app.use(require('./Routes/user'))
+
 
 
 app.get('/', (req, res) => {
