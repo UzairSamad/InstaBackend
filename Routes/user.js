@@ -21,7 +21,7 @@ router.get('/user/:id', (req, res) => {
 })
 
 // follow routes for user
-router.put('/follow', loginmiddleware,(req, res) => {
+router.put('/follow', loginmiddleware, (req, res) => {
     User.findByIdAndUpdate(req.body.followId, {
         $push: { followers: req.user._id }
     }, {
@@ -32,13 +32,13 @@ router.put('/follow', loginmiddleware,(req, res) => {
         }
         User.findByIdAndUpdate(req.user._id, {
             $push: { following: req.body.followId }
-        },{ new: true }).then(result => res.json(result)).catch(err => res.status(422).json({ error: err }))
+        }, { new: true }).select("-password").then(result => res.json(result)).catch(err => res.status(422).json({ error: err }))
     }
     )
 })
 
 // unfollow user route
-router.put('/unfollow', (req, res) => {
+router.put('/unfollow', loginmiddleware, (req, res) => {
     User.findByIdAndUpdate(req.body.followId, {
         $pull: { followers: req.user._id }
     }, {
@@ -49,7 +49,7 @@ router.put('/unfollow', (req, res) => {
         }
         User.findByIdAndUpdate(req.user._id, {
             $push: { following: req.body.followId }
-        },{ new: true }).then(result => res.json(result)).catch(err => res.status(422).json({ error: err }))
+        }, { new: true }).select("-password").then(result => res.json(result)).catch(err => res.status(422).json({ error: err }))
     }
     )
 })
